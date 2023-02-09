@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+#glcanvas {
+  border: 2px solid grey;
+}
+
+.outer-container {
+  width: 90%;
+  margin: auto;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.canvas-container {
+  position: relative;
+}
+
+.slider-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.slider {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+  align-items: right;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.slider label {
+  margin-bottom: 0;
+}
+
+.slider input {
+  width: 100%;
+}
+
+.btn-container {
+  /* background-color: lightgreen; */
+}
+
+.text-container {
+  width: 100%;
+  padding-left: 2rem;
+  padding-right: 3rem;
+
+  background-color: lightblue;
+}

@@ -33,14 +33,8 @@ function setAttributeLoc(gl, program, attributeName) {
   const stride = 2 * Float32Array.BYTES_PER_ELEMENT;
   const offset = 0;
 
-  gl.vertexAttribPointer(
-    location,
-    elementPerVertex,
-    type,
-    normalize,
-    stride,
-    offset
-  );
+  gl.vertexAttribPointer(location, elementPerVertex, type,
+    normalize, stride, offset);
 
   gl.enableVertexAttribArray(location);
 }
