@@ -17,67 +17,51 @@
       <div class="canvas-container">
         <div class="slider-container mr-2 mt-2">
           <div class="slider">
-            <label for="customRange3" class="form-label">x</label>
-            <input
-              type="range"
-              class="form-range"
-              min="0"
-              max="5"
-              step="0.5"
-              id="customRange3"
-            />
+            <label for="x" class="form-label">x</label>
+            <input type="range" id="x" value="0" step="5" />
           </div>
 
           <div class="slider">
             <label for="customRange3" class="form-label">y</label>
+            <input type="range" id="y" value="0" step="5" />
+          </div>
+
+          <div class="slider">
+            <label class="form-label">scale</label>
             <input
               type="range"
-              class="form-range"
+              id="scale"
               min="0"
-              max="5"
-              step="0.5"
-              id="customRange3"
+              max="2"
+              value="1"
+              step="0.1"
             />
           </div>
 
           <div class="slider">
-            <label for="customRange3" class="form-label">scale</label>
+            <label class="form-label">angle</label>
             <input
               type="range"
-              class="form-range"
-              min="0"
-              max="5"
-              step="0.5"
-              id="customRange3"
+              min="-180"
+              max="180"
+              value="0"
+              step="5"
+              id="angle"
             />
           </div>
 
           <div class="slider">
-            <label for="customRange3" class="form-label">angle</label>
-            <input
-              type="range"
-              class="form-range"
-              min="0"
-              max="5"
-              step="0.5"
-              id="customRange3"
-            />
+            <label class="form-label">shearX</label>
+            <input type="range" min="0" max="1" step="0.1" id="shearX" />
           </div>
 
           <div class="slider">
-            <label for="customRange3" class="form-label">shear</label>
-            <input
-              type="range"
-              class="form-range"
-              min="0"
-              max="5"
-              step="0.5"
-              id="customRange3"
-            />
+            <label class="form-label">shearY</label>
+            <input type="range" min="0" max="1" step="0.1" id="shearY" />
           </div>
         </div>
 
-        <canvas id="glcanvas" width="750px" height="600px"></canvas>
+        <canvas id="glcanvas" width="750" height="600"></canvas>
 
         <div class="btn-container">
           <button id="line-btn" type="button" class="btn btn-primary">
@@ -116,9 +100,9 @@
       </div>
     </div>
 
-    <script src="./source.js"></script>
     <script src="./utils.js"></script>
     <script src="./transformator.js"></script>
+    <script src="./dom.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
