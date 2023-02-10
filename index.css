@@ -29,6 +29,16 @@
   flex-direction: row;
 }
 
+#clear-btn {
+  position: absolute;
+  bottom: 60px;
+  right: 15px;
+
+  width: 10%;
+  text-align: center;
+  font-weight: 600;
+}
+
 .slider {
   margin-left: 1rem;
   margin-right: 0.5rem;
@@ -46,8 +56,12 @@
   width: 100%;
 }
 
-.btn-container {
-  /* background-color: lightgreen; */
+.btn-container li {
+  margin-right: 1rem;
+}
+
+.btn-container a {
+  font-weight: 600;
 }
 
 .text-container {

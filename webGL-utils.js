@@ -79,7 +79,7 @@ function setMat4UniformLoc(gl, program, attributeName, matrix) {
 
 
 function initGL() {
-    const canvas = document.querySelector("#glcanvas");
+    const canvas = document.getElementById("glcanvas");
     const gl = canvas.getContext("webgl");
 
     if (!gl) {
