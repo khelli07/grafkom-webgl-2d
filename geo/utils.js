@@ -54,6 +54,8 @@ function addTabListener(id, geo) {
         removeActiveTabs();
         tab.classList.add("active");
         
+        geo.restart();
+        
         switch (id) {
             case "line-tab":
                 geo = new Line(geo.gl);

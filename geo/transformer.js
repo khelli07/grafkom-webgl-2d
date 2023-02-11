@@ -90,7 +90,7 @@ function rotate(vertices, angle) {
  * @param {float} scale
  */
 function rescale(vertices, scale) {
-    for (let i = 0; i < length; i += 5) {
+    for (let i = 0; i < vertices.length; i += 5) {
         x = vertices[i];
         y = vertices[i + 1];
 
