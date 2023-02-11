@@ -2,6 +2,9 @@ const canvas = document.getElementById("glcanvas");
 const CANVAS_WIDTH = canvas.getAttribute("width");
 const CANVAS_HEIGHT = canvas.getAttribute("height");
 
+/**
+ * @description Reset geometry parameters
+ */
 function resetParams() {
     const xRange = document.getElementById("x");
     xRange.setAttribute("min", 0);
@@ -19,30 +22,50 @@ function resetParams() {
     document.getElementById("shearY").value = 0;
 }
 
-function getClipCoordinate(x, length) {
+/**
+ * @description Convert pixel to clip value [-1..1]
+ * @param {integer} value - pixel value (x or y)
+ * @param {integer} length - max canvas width or height
+ */
+function getClipValue(value, length) {
     let half = length / 2;
-    return (x - half) / half;
+    return (value - half) / half;
 }
 
+/**
+ * @description Convert pixel to clip coordinate [-1..1]
+ * @param {vertices} Array<Integer>[]
+ */
 function pixelToPoint(vertices) {
     const length = vertices.length / 5;
     for (let i = 0; i < length; i++) {
-        vertices[5 * i] = getClipCoordinate(vertices[5 * i], CANVAS_WIDTH);
-        vertices[5 * i + 1] = -getClipCoordinate(vertices[5 * i + 1], CANVAS_HEIGHT);
+        vertices[5 * i] = getClipValue(vertices[5 * i], CANVAS_WIDTH);
+        vertices[5 * i + 1] = -getClipValue(vertices[5 * i + 1], CANVAS_HEIGHT);
     }
     return vertices;
 }
 
+/**
+ * @description Translate the object by x and y
+ * @param {vertices} Array<Float>[]
+ * @param {float} x
+ * @param {float} y
+ */
 function translate (vertices, x, y) {
     const length = vertices.length / 5;
     for (let i = 0; i < length; i++) {
 
-        vertices[5 * i] += getClipCoordinate(x, CANVAS_WIDTH);
-        vertices[5 * i + 1] += getClipCoordinate(y, CANVAS_HEIGHT);
+        vertices[5 * i] += getClipValue(x, CANVAS_WIDTH);
+        vertices[5 * i + 1] += getClipValue(y, CANVAS_HEIGHT);
     }
     return vertices
 }
 
+/**
+ * @description Rotate the object by angle
+ * @param {vertices} Array<Float>[]
+ * @param {integer} angle [0..360]
+ */
 function rotate (vertices, angle) {
     angle = angle * Math.PI / 180;
     
@@ -57,6 +80,11 @@ function rotate (vertices, angle) {
     return vertices;
 }
 
+/**
+ * @description Rescale the object by scale
+ * @param {vertices} Array<Float>[]
+ * @param {float} scale
+ */
 function rescale (vertices, scale) {
     const length = vertices.length / 5;
     for (let i = 0; i < length; i++) {
@@ -67,4 +95,8 @@ function rescale (vertices, scale) {
         vertices[5 * i + 1] *= scale;
     }
     return vertices;
+}
+
+function shear (vertices, shearX, shearY) {
+    throw new Error("Not implemented");
 }

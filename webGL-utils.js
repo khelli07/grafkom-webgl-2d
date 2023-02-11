@@ -20,6 +20,12 @@ void main() {
 }
 `;
 
+/**
+ * @description Create vertex or fragment shader
+ * @param {WebGLRenderingContext} gl 
+ * @param {GLenum} type - gl.VERTEX_SHADER or gl.FRAGMENT_SHADER 
+ * @param {string} source
+ */
 function createShader(gl, type, source) {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, source);
@@ -32,6 +38,12 @@ function createShader(gl, type, source) {
   gl.deleteShader(shader);
 }
 
+/**
+ * @description Create openGL program
+ * @param {WebGLRenderingContext} gl 
+ * @param {WebGLShader} vertexShader
+ * @param {WebGLShader} fragmentShader
+ */
 function createProgram(gl, vertexShader, fragmentShader) {
   const program = gl.createProgram();
   gl.attachShader(program, vertexShader);
@@ -47,12 +59,13 @@ function createProgram(gl, vertexShader, fragmentShader) {
 }
 
 /**
+ * @description Set attribute location for vertex shader
  * @param {string} attributeName
- * @param {int} elementPerVertex
- * @param {int} offset
- * @param {int} stride
- * @param {ENUM} type
- * @param {ENUM} normalize
+ * @param {integer} elementPerVertex
+ * @param {integer} offset
+ * @param {integer} stride
+ * @param {GLenum} type
+ * @param {GLenum} normalize
  */
 function setAttributeLoc(gl, program, attributeName,
     elementPerVertex = 2, 
@@ -71,12 +84,6 @@ function setAttributeLoc(gl, program, attributeName,
 
   gl.enableVertexAttribArray(location);
 }
-
-function setMat4UniformLoc(gl, program, attributeName, matrix) {
-  const location = gl.getUniformLocation(program, attributeName);
-  gl.uniformMatrix4fv(location, false, matrix);
-}
-
 
 function initGL() {
     const canvas = document.getElementById("glcanvas");
