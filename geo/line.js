@@ -22,7 +22,7 @@ class Line extends Base {
         canvas.addEventListener("mousemove", (event) => {
             if (!this.isDrawn && isDown) {   
                 const pos = getMousePos(canvas, event);
-                this.createObject(initPoint, pos);
+                this.createLineObject(initPoint, pos);
             }
         }, false);
         
@@ -32,20 +32,19 @@ class Line extends Base {
     
             if (!this.isDrawn) {
                 const pos = getMousePos(canvas, event);
-                this.createObject(initPoint, pos);
+                this.createLineObject(initPoint, pos);
             }
         }, false);
     }
 
-    createObject (initPoint, pos, color = {r: 0.0, g: 0.0, b: 0.0}) {
-        if (this.params?.type == this.gl.LINES) {
-            this.vertices = [
-                initPoint.x, initPoint.y, color.r, color.g, color.b,
-                pos.x, pos.y, color.r, color.g, color.b,
-            ]
-        }
-            
-        this.vertices = pixelToPoint(this.vertices);
+    createLineObject (initPoint, pos) {
+        const { r, g, b } = this.params?.color;
+        this.vertices = [
+            initPoint.x, initPoint.y, r, g, b,
+            pos.x, pos.y, r, g, b
+        ];
+        
+        this.vertices = pixelsToPoints(this.vertices);
         this.transformAndDrawObject();
     }
 }

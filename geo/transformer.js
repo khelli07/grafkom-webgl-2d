@@ -24,23 +24,30 @@ function resetParams() {
 
 /**
  * @description Convert pixel to clip value [-1..1]
- * @param {integer} value - pixel value (x or y)
- * @param {integer} length - max canvas width or height
+ * @param {integer} x - pixel value x
  */
-function getClipValue(value, length) {
-    let half = length / 2;
-    return (value - half) / half;
+function getXClipValue(x) {
+    let half = CANVAS_WIDTH / 2;
+    return (x - half) / half;
+}
+
+/**
+ * @description Convert pixel to clip value [-1..1]
+ * @param {integer} y - pixel value y
+ */
+function getYClipValue(y) {
+    let half = CANVAS_HEIGHT / 2;
+    return -(y - half) / half;
 }
 
 /**
  * @description Convert pixel to clip coordinate [-1..1]
  * @param {vertices} Array<Integer>[]
  */
-function pixelToPoint(vertices) {
-    const length = vertices.length / 5;
-    for (let i = 0; i < length; i++) {
-        vertices[5 * i] = getClipValue(vertices[5 * i], CANVAS_WIDTH);
-        vertices[5 * i + 1] = -getClipValue(vertices[5 * i + 1], CANVAS_HEIGHT);
+function pixelsToPoints(vertices) {
+    for (let i = 0; i < vertices.length; i += 5) {
+        vertices[i] = getXClipValue(vertices[i]);
+        vertices[i + 1] = getYClipValue(vertices[i + 1]);
     }
     return vertices;
 }
@@ -51,12 +58,10 @@ function pixelToPoint(vertices) {
  * @param {float} x
  * @param {float} y
  */
-function translate (vertices, x, y) {
-    const length = vertices.length / 5;
-    for (let i = 0; i < length; i++) {
-
-        vertices[5 * i] += getClipValue(x, CANVAS_WIDTH);
-        vertices[5 * i + 1] += getClipValue(y, CANVAS_HEIGHT);
+function translate(vertices, x, y) {
+    for (let i = 0; i < vertices.length; i += 5) {
+        vertices[i] += getXClipValue(x);
+        vertices[i + 1] += getYClipValue(y);
     }
     return vertices
 }
@@ -66,16 +71,15 @@ function translate (vertices, x, y) {
  * @param {vertices} Array<Float>[]
  * @param {integer} angle [0..360]
  */
-function rotate (vertices, angle) {
+function rotate(vertices, angle) {
     angle = angle * Math.PI / 180;
     
-    const length = vertices.length / 5;
-    for (let i = 0; i < length; i++) {
-        x = vertices[5 * i];
-        y = vertices[5 * i + 1];
+    for (let i = 0; i < vertices.length; i += 5) {
+        x = vertices[i];
+        y = vertices[i + 1];
 
-        vertices[5 * i] = x * Math.cos(angle) - y * Math.sin(angle);
-        vertices[5 * i + 1] = x * Math.sin(angle) + y * Math.cos(angle);
+        vertices[i] = x * Math.cos(angle) - y * Math.sin(angle);
+        vertices[i + 1] = x * Math.sin(angle) + y * Math.cos(angle);
     }
     return vertices;
 }
@@ -85,18 +89,17 @@ function rotate (vertices, angle) {
  * @param {vertices} Array<Float>[]
  * @param {float} scale
  */
-function rescale (vertices, scale) {
-    const length = vertices.length / 5;
-    for (let i = 0; i < length; i++) {
-        x = vertices[5 * i];
-        y = vertices[5 * i + 1];
+function rescale(vertices, scale) {
+    for (let i = 0; i < length; i += 5) {
+        x = vertices[i];
+        y = vertices[i + 1];
 
-        vertices[5 * i] *= scale;
-        vertices[5 * i + 1] *= scale;
+        vertices[i] *= scale;
+        vertices[i + 1] *= scale;
     }
     return vertices;
 }
 
-function shear (vertices, shearX, shearY) {
+function shear(vertices, shearX, shearY) {
     throw new Error("Not implemented");
 }

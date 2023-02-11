@@ -1,5 +1,5 @@
 // Sliders
-function addRangeListener (id, geo) {
+function addRangeListener(id, geo) {
     const range = document.getElementById(id);
     range.addEventListener("input", () => {
         geo.params[id] = parseFloat(range.value);
@@ -33,12 +33,10 @@ function addClearButtonListener(geo) {
 }
 
 // Tabs
-function hexToNormalizedRGB(event) {
-    const color = event.target.value
-    const r = parseInt(color.substr(1,2), 16)
-    const g = parseInt(color.substr(3,2), 16)
-    const b = parseInt(color.substr(5,2), 16)
-    console.log(`red: ${r}, green: ${g}, blue: ${b}`)
+function hexToNormalizedRGB(color) {
+    const r = parseInt(color.substr(1,2), 16);
+    const g = parseInt(color.substr(3,2), 16);
+    const b = parseInt(color.substr(5,2), 16);
     
     return {r: r/255, g: g/255, b: b/255};
 }
@@ -81,4 +79,27 @@ const addTypeListener = (geo) => {
     addTabListener("square-tab", geo);
     addTabListener("rectangle-tab", geo);
     addTabListener("polygon-tab", geo);
+}
+
+const addColorListener = (geo) => { 
+    const colorPicker = document.getElementById("color-picker");
+    colorPicker.addEventListener("input", (event) => {
+        geo.params.color = hexToNormalizedRGB(event.target.value);
+        geo.changeColor();
+    }, false);
+}
+
+// For fun
+function applyCursorRippleEffect(e) {
+    const ripple = document.createElement("div");
+
+    ripple.className = "ripple";
+    document.body.appendChild(ripple);
+
+    ripple.style.left = `${e.clientX}px`;
+    ripple.style.top = `${e.clientY}px`; 
+
+    ripple.style.animation = "ripple-effect .4s  linear";
+    ripple.onanimationend = () => document.body.removeChild(ripple);
+
 }
