@@ -1,22 +1,3 @@
-function transformObject (vertices, params) {
-    vertices = rescale(vertices, params?.scale);    
-    vertices = rotate(vertices, params?.angle);
-    vertices = translate(vertices, params?.x, params?.y);
-
-    return vertices;
-}
-
-function drawObject (gl, type, vertices) {
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    gl.drawArrays(type, 0, vertices.length / 5);
-}
-
-function transformAndDrawObject (geo) {
-    let vertices = geo.vertices.slice();
-    vertices = transformObject(vertices, geo.params);
-    drawObject(geo.gl, geo.params?.type, vertices);
-}
-
 // Sliders
 function addRangeListener (id, geo) {
     const range = document.getElementById(id);
@@ -35,7 +16,7 @@ const addParamsListener = (geo) => {
     addRangeListener("shearY", geo);
 }
 
-// Canvas
+// Canvas - supporting functions for listeners
 function getMousePos(canvas, event) {
     const rect = canvas.getBoundingClientRect();
     return {
@@ -44,50 +25,45 @@ function getMousePos(canvas, event) {
     };
 }
 
-function createObject (geo, initPoint, pos, color = {r: 0.0, g: 0.0, b: 0.0}) {
-    geo.vertices = [
-        initPoint.x, initPoint.y, color.r, color.g, color.b,
-        pos.x, pos.y, color.r, color.g, color.b,
-    ]
-
-    geo.vertices = pixelToPoint(geo.vertices);
-    transformAndDrawObject(geo);
-}
-
-const addCanvasListener = (geo) => {
-    let isDrawn = false;
-    let isDown = false;
-    let initPoint = (0.0, 0.0);
-    
-    const canvas = document.getElementById("glcanvas");
-    canvas.addEventListener("mousedown", (event) => {
-        isDown = true;
-
-        if (!isDrawn) {
-            initPoint = getMousePos(canvas, event);
-        }
-    }, false);
-    
-    canvas.addEventListener("mousemove", (event) => {
-        if (!isDrawn && isDown) {   
-            const pos = getMousePos(canvas, event);
-            createObject(geo, initPoint, pos);
-        }
-    }, false);
-    
-    canvas.addEventListener("mouseup", (event) => {
-        isDown = false;
-        isDrawn = true;
-
-        if (!isDrawn) {
-            const pos = getMousePos(canvas, event);
-            createObject(geo, initPoint, pos);
-        }
-    }, false);
-
+function addClearButtonListener(geo) {
     const clearButton = document.getElementById("clear-btn");
     clearButton.addEventListener("click", () => {
-        isDrawn = false;
         geo.restart();
     }, false);
+}
+
+// Tabs
+function hexToNormalizedRGB(event) {
+    const color = event.target.value
+    const r = parseInt(color.substr(1,2), 16)
+    const g = parseInt(color.substr(3,2), 16)
+    const b = parseInt(color.substr(5,2), 16)
+    console.log(`red: ${r}, green: ${g}, blue: ${b}`)
+    
+    return {r: r/255, g: g/255, b: b/255};
+}
+
+function removeActiveTabs() {
+    document.getElementById("line-tab").classList.remove("active");
+    document.getElementById("square-tab").classList.remove("active");
+    document.getElementById("rectangle-tab").classList.remove("active");
+    document.getElementById("polygon-tab").classList.remove("active");
+}
+
+function addTabListener(id, geo, type) {
+    const tab = document.getElementById(id);
+    tab.addEventListener("click", () => {      
+        removeActiveTabs();
+        tab.classList.add("active");
+        
+        geo.params.type = type;
+        geo.restart();
+    }, false);
+}
+
+const addTypeListener = (geo) => {
+    addTabListener("line-tab", geo, geo.gl.LINES);
+    addTabListener("square-tab", geo, geo.gl.LINES); // TODO: change me
+    addTabListener("rectangle-tab", geo, geo.gl.LINES); // TODO: change me
+    addTabListener("polygon-tab", geo, geo.gl.TRIANGLE_FAN);
 }

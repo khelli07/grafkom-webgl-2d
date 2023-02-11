@@ -53,23 +53,21 @@
           <ul class="nav">
             <ul class="nav nav-pills">
               <li class="nav-item">
-                <a class="nav-link active black" aria-current="page" href="#"
-                  >Line</a
-                >
+                <a id="line-tab" class="nav-link active" href="#">Line</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Square</a>
+                <a id="square-tab" class="nav-link" href="#">Square</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Rectangle</a>
+                <a id="rectangle-tab" class="nav-link" href="#">Rectangle</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Polygon</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Placeholder</a>
+                <a id="polygon-tab" class="nav-link" href="#">Polygon</a>
               </li>
             </ul>
+            <div class="color-container">
+              <input type="color" id="color-picker" value="#0000ff" />
+            </div>
           </ul>
         </div>
 
@@ -95,6 +93,7 @@
     <script src="./webGL-utils.js"></script>
     <script src="./transformer.js"></script>
     <script src="./dom.js"></script>
+    <script src="./geometry.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
