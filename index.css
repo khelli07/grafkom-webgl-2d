@@ -91,3 +91,19 @@ input::-webkit-color-swatch {
   padding-right: 3rem;
   background-color: lightblue;
 }
+
+.ripple {
+  width: 5px;
+  height: 5px;
+  background-color: transparent;
+  position: fixed;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 0, 0, 0.401);
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(15);
+    opacity: 0.01;
+  }
+}
