@@ -1,23 +1,32 @@
 class Geometry {
-    constructor(gl, type) {
-        resetParams();
-        
+    constructor(gl, type) {        
         this.gl = gl;
+        this.type = type;
+
+        this.restart();
+    }
+
+    restart() {
+        resetParams();
         this.vertices = [];
         this.params = {
-            x: document.getElementById("x").value,
-            y: document.getElementById("y").value,
-            scale: document.getElementById("scale").value,
-            angle: document.getElementById("angle").value,
-            shearX: document.getElementById("shearX").value,
-            shearY: document.getElementById("shearY").value,
-            type: type
-        }    
+            x: parseInt(document.getElementById("x").value),
+            y: parseInt(document.getElementById("y").value),
+            scale: parseInt(document.getElementById("scale").value),
+            angle: parseInt(document.getElementById("angle").value),
+            shearX: parseInt(document.getElementById("shearX").value),
+            shearY: parseInt(document.getElementById("shearY").value),
+            type: this.type
+        }
+
+        console.log(this.params);
+
+        transformAndDrawObject(this);
     }
 
     prepare() {
-        addCanvasListener(this.gl, this, this.params);
-        addParamsListener(this.gl, this, this.params);
+        addCanvasListener(this);
+        addParamsListener(this);
     }
 }
 

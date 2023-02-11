@@ -11,51 +11,50 @@ function drawObject (gl, type, vertices) {
     gl.drawArrays(type, 0, vertices.length / 5);
 }
 
-function transformAndDrawObject (gl, geometry, params) {
-    let vertices = geometry.vertices.slice();
-    vertices = transformObject(vertices, params);
-    drawObject(gl, params?.type, vertices);
-    console.log("sliced", vertices);
+function transformAndDrawObject (geo) {
+    let vertices = geo.vertices.slice();
+    vertices = transformObject(vertices, geo.params);
+    drawObject(geo.gl, geo.params?.type, vertices);
 }
 
 // Sliders
-function addRangeListener (id, gl, vertices, params) {
+function addRangeListener (id, geo) {
     const range = document.getElementById(id);
     range.addEventListener("input", () => {
-        params[id] = parseFloat(range.value);
-        transformAndDrawObject(gl, vertices, params);
+        geo.params[id] = parseFloat(range.value);
+        transformAndDrawObject(geo);
     }, false);
 }
 
-const addParamsListener = (gl, vertices, params) => {
-    addRangeListener("x", gl, vertices, params);
-    addRangeListener("y", gl, vertices, params);
-    addRangeListener("angle", gl, vertices, params);
-    addRangeListener("scale", gl, vertices, params);
-    addRangeListener("shearX", gl, vertices, params);
-    addRangeListener("shearY", gl, vertices, params);
+const addParamsListener = (geo) => {
+    addRangeListener("x", geo);
+    addRangeListener("y", geo);
+    addRangeListener("angle", geo);
+    addRangeListener("scale", geo);
+    addRangeListener("shearX", geo);
+    addRangeListener("shearY", geo);
 }
 
 // Canvas
 function getMousePos(canvas, event) {
-    var rect = canvas.getBoundingClientRect();
+    const rect = canvas.getBoundingClientRect();
     return {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top
     };
 }
 
-function createObject (gl, geometry, params, initPoint, pos, color = {r: 0.0, g: 0.0, b: 0.0}) {
-    geometry.vertices = [
+function createObject (geo, initPoint, pos, color = {r: 0.0, g: 0.0, b: 0.0}) {
+    geo.vertices = [
         initPoint.x, initPoint.y, color.r, color.g, color.b,
         pos.x, pos.y, color.r, color.g, color.b,
     ]
 
-    geometry.vertices = pixelToPoint(geometry.vertices);
-    transformAndDrawObject(gl, geometry, params);
+    geo.vertices = pixelToPoint(geo.vertices);
+    transformAndDrawObject(geo);
 }
 
-const addCanvasListener = (gl, geometry, params) => {
+const addCanvasListener = (geo) => {
     let isDrawn = false;
     let isDown = false;
     let initPoint = (0.0, 0.0);
@@ -72,7 +71,7 @@ const addCanvasListener = (gl, geometry, params) => {
     canvas.addEventListener("mousemove", (event) => {
         if (!isDrawn && isDown) {   
             const pos = getMousePos(canvas, event);
-            createObject(gl, geometry, params, initPoint, pos);
+            createObject(geo, initPoint, pos);
         }
     }, false);
     
@@ -82,15 +81,13 @@ const addCanvasListener = (gl, geometry, params) => {
 
         if (!isDrawn) {
             const pos = getMousePos(canvas, event);
-            createObject(gl, geometry, params, initPoint, pos);
+            createObject(geo, initPoint, pos);
         }
     }, false);
 
     const clearButton = document.getElementById("clear-btn");
     clearButton.addEventListener("click", () => {
         isDrawn = false;
-        geometry.vertices = [];
-        transformAndDrawObject(gl, geometry, params);
-        resetParams();
+        geo.restart();
     }, false);
 }

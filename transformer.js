@@ -6,17 +6,17 @@ function resetParams() {
     const xRange = document.getElementById("x");
     xRange.setAttribute("min", 0);
     xRange.setAttribute("max", CANVAS_WIDTH);
-    xRange.setAttribute("value", CANVAS_WIDTH / 2);
+    xRange.value = CANVAS_WIDTH / 2;
     
     const yRange = document.getElementById("y");
     yRange.setAttribute("min", 0);
     yRange.setAttribute("max", CANVAS_HEIGHT);
-    yRange.setAttribute("value", CANVAS_HEIGHT / 2);
+    yRange.value = CANVAS_HEIGHT / 2;
 
-    document.getElementById("angle").setAttribute("value", 0);
-    document.getElementById("scale").setAttribute("value", 1);
-    document.getElementById("shearX").setAttribute("value", 0);
-    document.getElementById("shearY").setAttribute("value", 0);
+    document.getElementById("angle").value = 0;
+    document.getElementById("scale").value = 1;
+    document.getElementById("shearX").value = 0;
+    document.getElementById("shearY").value = 0;
 }
 
 function getClipCoordinate(x, length) {
@@ -27,7 +27,6 @@ function getClipCoordinate(x, length) {
 function pixelToPoint(vertices) {
     const length = vertices.length / 5;
     for (let i = 0; i < length; i++) {
-        console.log(vertices[5 * i + 1], -getClipCoordinate(vertices[5 * i + 1], CANVAS_HEIGHT));
         vertices[5 * i] = getClipCoordinate(vertices[5 * i], CANVAS_WIDTH);
         vertices[5 * i + 1] = -getClipCoordinate(vertices[5 * i + 1], CANVAS_HEIGHT);
     }
