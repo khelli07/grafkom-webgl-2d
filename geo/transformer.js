@@ -3,7 +3,7 @@ const CANVAS_WIDTH = canvas.getAttribute("width");
 const CANVAS_HEIGHT = canvas.getAttribute("height");
 
 /**
- * @description Reset geometry parameters
+ * @description Reset Base parameters
  */
 function resetParams() {
     const xRange = document.getElementById("x");

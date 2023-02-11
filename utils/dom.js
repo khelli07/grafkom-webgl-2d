@@ -3,7 +3,7 @@ function addRangeListener (id, geo) {
     const range = document.getElementById(id);
     range.addEventListener("input", () => {
         geo.params[id] = parseFloat(range.value);
-        transformAndDrawObject(geo);
+        geo.transformAndDrawObject();
     }, false);
 }
 
@@ -50,20 +50,35 @@ function removeActiveTabs() {
     document.getElementById("polygon-tab").classList.remove("active");
 }
 
-function addTabListener(id, geo, type) {
+function addTabListener(id, geo) {
     const tab = document.getElementById(id);
     tab.addEventListener("click", () => {      
         removeActiveTabs();
         tab.classList.add("active");
         
-        geo.params.type = type;
-        geo.restart();
+        switch (id) {
+            case "line-tab":
+                geo = new Line(geo.gl);
+                break;
+            case "square-tab":
+                geo = new Square(geo.gl);
+                break;
+            case "rectangle-tab":
+                geo = new Rectangle(geo.gl);
+                break;
+            case "polygon-tab":
+                geo = new Polygon(geo.gl);
+                break;
+        }
+
+        geo.prepare();
+
     }, false);
 }
 
 const addTypeListener = (geo) => {
-    addTabListener("line-tab", geo, geo.gl.LINES);
-    addTabListener("square-tab", geo, geo.gl.LINES); // TODO: change me
-    addTabListener("rectangle-tab", geo, geo.gl.LINES); // TODO: change me
-    addTabListener("polygon-tab", geo, geo.gl.TRIANGLE_FAN);
+    addTabListener("line-tab", geo);
+    addTabListener("square-tab", geo);
+    addTabListener("rectangle-tab", geo);
+    addTabListener("polygon-tab", geo);
 }
