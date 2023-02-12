@@ -1,5 +1,5 @@
 
-class Line extends Base {
+class Line extends Geometry {
     constructor(gl) {
         super(gl, gl.LINES);
     }
@@ -22,29 +22,29 @@ class Line extends Base {
         canvas.addEventListener("mousemove", (event) => {
             if (!this.isDrawn && isDown) {   
                 const pos = getMousePos(canvas, event);
-                this.createLineObject(initPoint, pos);
+                this.createLineObject(initPoint, pos, false);
             }
         }, false);
         
         canvas.addEventListener("mouseup", (event) => {
             isDown = false;
-            this.isDrawn = true;
-    
+            
             if (!this.isDrawn) {
                 const pos = getMousePos(canvas, event);
-                this.createLineObject(initPoint, pos);
+                this.createLineObject(initPoint, pos, true);
+                this.isDrawn = true;
             }
         }, false);
     }
 
-    createLineObject (initPoint, pos) {
+    createLineObject (initPoint, pos, isFinal) {
         const { r, g, b } = this.params?.color;
         this.vertices = [
             initPoint.x, initPoint.y, r, g, b,
             pos.x, pos.y, r, g, b
         ];
         
-        this.vertices = pixelsToPoints(this.vertices);
-        this.transformAndDrawObject();
+        this.vertices = pixelToClip(this.vertices);
+        this.transformAndDrawObject(isFinal);
     }
 }

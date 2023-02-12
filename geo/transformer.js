@@ -3,7 +3,7 @@ const CANVAS_WIDTH = canvas.getAttribute("width");
 const CANVAS_HEIGHT = canvas.getAttribute("height");
 
 /**
- * @description Reset Base parameters
+ * @description Reset Geometry parameters
  */
 function resetParams() {
     const xRange = document.getElementById("x");
@@ -41,13 +41,43 @@ function getYClipValue(y) {
 }
 
 /**
- * @description Convert pixel to clip coordinate [-1..1]
+ * @description Convert pixel to clip coordinates [-1..1]
  * @param {vertices} Array<Integer>[]
  */
-function pixelsToPoints(vertices) {
+function pixelToClip(vertices) {
     for (let i = 0; i < vertices.length; i += 5) {
         vertices[i] = getXClipValue(vertices[i]);
         vertices[i + 1] = getYClipValue(vertices[i + 1]);
+    }
+    return vertices;
+}
+
+/**
+ * @description Convert clip to pixel value
+ * @param {float} x - clip value x [-1..1]
+ */
+function getXPixelValue(x) {
+    let half = CANVAS_WIDTH / 2;
+    return x * half + half;
+}
+
+/**
+ * @description Convert clip to pixel value
+ * @param {float} y - clip value y [-1..1]
+ */
+function getYPixelValue(y) {
+    let half = CANVAS_HEIGHT / 2;
+    return -y * half + half;
+}
+
+/**
+ * @description Convert clip to pixel coordinates
+ * @param {vertices} Array<Integer>[]
+ */
+function clipToPixel(vertices) {
+    for (let i = 0; i < vertices.length; i += 5) {
+        vertices[i] = getXPixelValue(vertices[i]);
+        vertices[i + 1] = getYPixelValue(vertices[i + 1]);
     }
     return vertices;
 }

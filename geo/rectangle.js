@@ -1,5 +1,5 @@
 
-class Rectangle extends Base {
+class Rectangle extends Geometry {
     constructor(gl) {
         super(gl, gl.TRIANGLE_FAN); // change type
     }

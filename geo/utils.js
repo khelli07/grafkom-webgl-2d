@@ -7,15 +7,6 @@ function addRangeListener(id, geo) {
     }, false);
 }
 
-const addParamsListener = (geo) => {
-    addRangeListener("x", geo);
-    addRangeListener("y", geo);
-    addRangeListener("angle", geo);
-    addRangeListener("scale", geo);
-    addRangeListener("shearX", geo);
-    addRangeListener("shearY", geo);
-}
-
 // Canvas - supporting functions for listeners
 function getMousePos(canvas, event) {
     const rect = canvas.getBoundingClientRect();
@@ -23,13 +14,6 @@ function getMousePos(canvas, event) {
       x: event.clientX - rect.left,
       y: event.clientY - rect.top
     };
-}
-
-function addClearButtonListener(geo) {
-    const clearButton = document.getElementById("clear-btn");
-    clearButton.addEventListener("click", () => {
-        geo.restart();
-    }, false);
 }
 
 // Tabs
@@ -76,22 +60,7 @@ function addTabListener(id, geo) {
     }, false);
 }
 
-const addTypeListener = (geo) => {
-    addTabListener("line-tab", geo);
-    addTabListener("square-tab", geo);
-    addTabListener("rectangle-tab", geo);
-    addTabListener("polygon-tab", geo);
-}
-
-const addColorListener = (geo) => { 
-    const colorPicker = document.getElementById("color-picker");
-    colorPicker.addEventListener("input", (event) => {
-        geo.params.color = hexToNormalizedRGB(event.target.value);
-        geo.changeColor();
-    }, false);
-}
-
-// For fun
+// For ripple
 function applyCursorRippleEffect(e) {
     const ripple = document.createElement("div");
 

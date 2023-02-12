@@ -107,3 +107,14 @@ input::-webkit-color-swatch {
     opacity: 0.01;
   }
 }
+
+.point {
+  width: 5px;
+  height: 5px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.point:hover {
+  cursor: pointer;
+}

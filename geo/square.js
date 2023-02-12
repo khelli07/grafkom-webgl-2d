@@ -1,5 +1,5 @@
 
-class Square extends Base {
+class Square extends Geometry {
     constructor(gl) {
         super(gl, gl.TRIANGLE_FAN); // change type
     }

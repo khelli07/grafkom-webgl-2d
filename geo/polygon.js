@@ -1,5 +1,5 @@
 
-class Polygon extends Base {
+class Polygon extends Geometry {
     constructor(gl) {
         super(gl, gl.TRIANGLE_FAN);
     }
