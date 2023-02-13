@@ -108,13 +108,12 @@ class Geometry {
     resetCanvasListener() {
         this.removeVerticesListener();
 
-        const canvas = document.getElementById("glcanvas");   
-        canvas.removeEventListener("mousedown", this.mouseDownListener);
-        canvas.removeEventListener("mouseup", this.mouseUpListener);
-        canvas.removeEventListener("mousemove", this.mouseMoveListener);
-        canvas.removeEventListener("click", this.clickListener);
-
-        canvas.addEventListener("click", (event) => applyCursorRippleEffect(event));
+        const oldCanvas = document.getElementById("glcanvas");  
+        const newCanvas = oldCanvas.cloneNode(true);
+        oldCanvas.parentNode.replaceChild(newCanvas, oldCanvas);
+        newCanvas.addEventListener("click", (event) => applyCursorRippleEffect(event));
+    
+        this.gl = initGL();
     }
 
     addVerticesListener(vertices) {
@@ -142,11 +141,9 @@ class Geometry {
     }
 
     removeVerticesListener() {
-       for (let i = 0; i < this.vertices.length; i += 5) {
-           const element = document.getElementById(`point-${i / 5}`);
-           if (element) {
-               element.remove();
-           }
-       }
+        const points = document.querySelectorAll(".point");
+        points.forEach((point) => {
+            point.remove();
+        });
     }
 }
