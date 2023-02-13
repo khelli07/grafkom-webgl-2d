@@ -125,15 +125,39 @@ class Geometry {
             let element = document.createElement("div");
             element.classList.add("point");
             element.setAttribute("id", `point-${i / 5}`);
-
             element.style.cssText = `
                 position: absolute;
                 left: ${vertices[i]}px;
                 top: ${vertices[i + 1]}px;
             `
 
-            element.addEventListener("click", (event) => {
-                console.log("clicked", event.target.id);
+            element.addEventListener("click", () => {
+                let colorPicker = document.createElement("input");
+                colorPicker.setAttribute("type", "color");
+
+                colorPicker.classList.add("color-input");
+                colorPicker.value = document.getElementById("color-picker").value;
+                colorPicker.style.cssText = `
+                    position: absolute;
+                    left: ${vertices[i] + 20}px;
+                    top: ${vertices[i + 1] - 20}px;
+                `
+
+                colorPicker.addEventListener("input", (event) => {
+                    let { r, g, b } = hexToNormalizedRGB(event.target.value);
+                    this.vertices[i + 2] = r;
+                    this.vertices[i + 3] = g;
+                    this.vertices[i + 4] = b;
+                    this.transformAndDrawObject();
+                }, false);
+                
+                colorPicker.addEventListener("blur", () => {
+                    colorPicker.remove();
+                }, false);
+                
+                container.appendChild(colorPicker);
+                colorPicker.focus();
+                console.log(colorPicker);
             });
 
             container.appendChild(element);
@@ -145,5 +169,8 @@ class Geometry {
         points.forEach((point) => {
             point.remove();
         });
+    }
+
+    addVertexColorPicker() {
     }
 }

@@ -70,15 +70,19 @@
   width: 8%;
 }
 
-#color-picker {
+.color-input {
   padding: 0;
   border: 2px solid lightgrey;
-  height: 80%;
-  width: 100%;
+  height: 30px;
+  width: 60px;
 }
 
-#color-picker:hover {
+.color-input:hover {
   cursor: pointer;
+}
+
+.color-input:focus {
+  border: 2px solid lightgrey;
 }
 
 input::-webkit-color-swatch {

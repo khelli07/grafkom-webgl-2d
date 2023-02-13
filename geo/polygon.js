@@ -37,9 +37,9 @@ class Polygon extends Geometry {
 
     verticesToTuples(vertices) {
         let tuples = [];
-        const { r, g, b } = this.params.color;
         for (let i = 0; i < vertices.length; i += 5) {
-            tuples.push([vertices[i], vertices[i + 1], r, g, b]);
+            tuples.push([vertices[i], vertices[i + 1], 
+                vertices[i + 2], vertices[i + 3], vertices[i + 4]]);
         }
         return tuples;
     }
