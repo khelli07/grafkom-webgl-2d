@@ -121,19 +121,21 @@ class Geometry {
 
         vertices = clipToPixel(vertices);
         const container = document.querySelector(".canvas-container");
+        const canvas = document.getElementById("glcanvas");
         for (let i = 0; i < vertices.length; i += 5) {
             let element = document.createElement("div");
             element.classList.add("point");
             element.setAttribute("id", `point-${i / 5}`);
             element.style.cssText = `
                 position: absolute;
-                left: ${vertices[i]}px;
-                top: ${vertices[i + 1]}px;
+                left: ${vertices[i] - 2}px;
+                top: ${vertices[i + 1] - 2}px;
             `
 
             element.addEventListener("click", () => {
                 let colorPicker = document.createElement("input");
                 colorPicker.setAttribute("type", "color");
+                colorPicker.setAttribute("id", `color-picker-${i / 5}`);
 
                 colorPicker.classList.add("color-input");
                 colorPicker.value = document.getElementById("color-picker").value;
@@ -157,9 +159,39 @@ class Geometry {
                 
                 container.appendChild(colorPicker);
                 colorPicker.focus();
-                console.log(colorPicker);
             });
 
+            element.addEventListener("dblclick", () => {
+                let colorPicker = document.querySelector(`#color-picker-${i / 5}`);
+                if (colorPicker) {
+                    colorPicker.blur();
+                }
+
+                this.vertices.splice(i, 5);
+                this.transformAndDrawObject();
+
+                if (this.vertices.length == 0) {
+                    this.removeVerticesListener();
+                    this.restart();
+                }
+            }, false);
+
+            element.addEventListener("drag", (event) => { 
+                const pos = getMousePos(canvas, event);
+                if (pos.x > 0 && pos.y > 0) {
+                    this.vertices[i] = getXClipValue(pos.x);
+                    this.vertices[i + 1] = getYClipValue(pos.y);
+                    this.transformAndDrawObject();
+                }
+            }, false);
+
+            element.addEventListener("dragend", (event) => { 
+                const pos = getMousePos(canvas, event);
+                this.vertices[i] = getXClipValue(pos.x);
+                this.vertices[i + 1] = getYClipValue(pos.y);
+                this.transformAndDrawObject();
+            }, false);
+            
             container.appendChild(element);
         }
     }
