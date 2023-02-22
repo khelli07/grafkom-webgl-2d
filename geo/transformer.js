@@ -18,6 +18,8 @@ function resetParams() {
 
     document.getElementById("angle").value = 0;
     document.getElementById("scale").value = 1;
+    document.getElementById("transformX").value = 1;
+    document.getElementById("transformY").value = 1;
     document.getElementById("shearX").value = 0;
     document.getElementById("shearY").value = 0;
 }
@@ -83,6 +85,22 @@ function clipToPixel(vertices) {
 }
 
 /**
+ * @description Find the center of a certaion amount of ve
+ * @param {vertices} Array<Integer>[]
+ */
+function findCenter(vertices) {
+    sumX = 0;
+    sumY = 0;
+    n = 0;
+    for(let i = 0; i < vertices.length; i += 5) {
+        sumX += vertices[i];
+        sumY += vertices[i+1];
+        n += 1;
+    }
+    return[sumX/n,sumY/n];
+}
+
+/**
  * @description Translate the object by x and y
  * @param {vertices} Array<Float>[]
  * @param {float} x
@@ -103,13 +121,13 @@ function translate(vertices, x, y) {
  */
 function rotate(vertices, angle) {
     angle = angle * Math.PI / 180;
-    
+    avg = findCenter(vertices);
     for (let i = 0; i < vertices.length; i += 5) {
-        x = vertices[i];
-        y = vertices[i + 1];
+        x = vertices[i] - avg[0];
+        y = vertices[i + 1] - avg[1];
 
-        vertices[i] = x * Math.cos(angle) - y * Math.sin(angle);
-        vertices[i + 1] = x * Math.sin(angle) + y * Math.cos(angle);
+        vertices[i] = x*Math.cos(angle) - y*Math.sin(angle) + avg[0];
+        vertices[i + 1] = x*Math.sin(angle) + y*Math.cos(angle) + avg[1];
     }
     return vertices;
 }
@@ -120,16 +138,49 @@ function rotate(vertices, angle) {
  * @param {float} scale
  */
 function rescale(vertices, scale) {
+    avg = findCenter(vertices);
     for (let i = 0; i < vertices.length; i += 5) {
-        x = vertices[i];
-        y = vertices[i + 1];
+        vertices[i] = ((vertices[i] - avg[0])*scale)+avg[0];
+        vertices[i + 1] = ((vertices[i + 1] - avg[1])*scale)+avg[1];
+    }
+    return vertices;
+}
 
-        vertices[i] *= scale;
-        vertices[i + 1] *= scale;
+/**
+ * @description Chnage the width of a rectangle by transformX
+ * @param {vertices} Array<Float>[]
+ * @param {float} transformX
+ */
+function transformX(vertices, transformX) {
+    avg = findCenter(vertices);
+    for (let i = 0; i < vertices.length; i += 5) {
+        vertices[i] = ((vertices[i] - avg[0])*transformX)+avg[0];
+    }
+    return vertices;
+}
+
+/**
+ * @description Chnage the height of a rectangle by transformX
+ * @param {vertices} Array<Float>[]
+ * @param {float} transformY
+ */
+function transformY(vertices, transformY) {
+    avg = findCenter(vertices);
+    for (let i = 0; i < vertices.length; i += 5) {
+        vertices[i + 1] = ((vertices[i + 1] - avg[1])*transformY)+avg[1];
     }
     return vertices;
 }
 
 function shear(vertices, shearX, shearY) {
-    throw new Error("Not implemented");
+    for (let i = 0; i < vertices.length; i += 5) {
+        // x = vertices[i] - avg[0];
+        // y = vertices[i + 1] - avg[1];
+
+        // vertices[i] = (x + y * shearX) + avg[0];
+        // vertices[i + 1] = (y + x * shearY) + avg[1];
+
+        vertices[i] = ((vertices[i])*shearX)+avg[0];
+        vertices[i + 1] = ((vertices[i + 1] - avg[1])*shearY)+avg[1];
+      }
 }

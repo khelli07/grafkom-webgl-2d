@@ -21,6 +21,8 @@ class Geometry {
             y: parseInt(document.getElementById("y").value),
             scale: parseInt(document.getElementById("scale").value),
             angle: parseInt(document.getElementById("angle").value),
+            transformX: parseInt(document.getElementById("transformX").value),
+            transformY: parseInt(document.getElementById("transformY").value),
             shearX: parseInt(document.getElementById("shearX").value),
             shearY: parseInt(document.getElementById("shearY").value),
             color: hexToNormalizedRGB(document.getElementById("color-picker").value),
@@ -63,7 +65,9 @@ class Geometry {
         vertices = rescale(vertices, this.params?.scale);    
         vertices = rotate(vertices, this.params?.angle);
         vertices = translate(vertices, this.params?.x, this.params?.y);
-    
+        vertices = transformX(vertices, this.params?.transformX);
+        vertices = transformY(vertices, this.params?.transformY); 
+        // vertices = shear(vertices, this.params?.shearX, this.params?.shearY);
         return vertices;
     }
     
@@ -78,6 +82,8 @@ class Geometry {
         addRangeListener("y", this);
         addRangeListener("angle", this);
         addRangeListener("scale", this);
+        addRangeListener("transformX", this);
+        addRangeListener("transformY", this);
         addRangeListener("shearX", this);
         addRangeListener("shearY", this);
     }
