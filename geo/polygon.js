@@ -18,22 +18,14 @@ class Polygon extends Geometry {
         }, false);
     }
 
-    addConvexHullButtonListener() {
-        const chButton = document.getElementById("convexhull-btn");
-        chButton.addEventListener("click", () => {
-            this.vertices = convexHull(this.vertices);
-            this.sortVertices();
-            this.transformAndDrawObject();
-        }, false);
-    }
-
     addVertex(x, y) {
         const { r, g, b } = this.params.color;
         this.vertices.push(x, y, r, g, b);
     }
 
     createPolygonObject() {
-        // this.sortVertices();
+        this.vertices = convexHull(this.vertices);
+        this.sortVertices();
         this.transformAndDrawObject();
     }
 

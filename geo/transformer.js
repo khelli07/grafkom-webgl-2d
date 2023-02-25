@@ -186,15 +186,21 @@ function shear(vertices, shearX, shearY) {
 }
 
 function convexHull(vertices){
+    // Get the divider (line by leftmost & rightmost)
     let divider = getDivider(vertices)
+
+    // Divide the vertices into 2 pool
     let divideresult = divide(vertices, divider)
     let S1 = divideresult[0]
     let S2 = divideresult[1]
+
+    // Create convexhull variable and push divider points into it
     let convexhull = []
     for (let j = 0; j < divider.length; j += 1){
         convexhull.push(divider[j])
     }
 
+    // Start recursion by divide & conquer
     if (S1.length > 0){
         convexhull = recursion(S1, divider, convexhull)
     }
@@ -204,12 +210,7 @@ function convexHull(vertices){
 
     return convexhull
 
-    // for (let i = 0; i < convexhull.length; i += 5){
-    //     console.log("" + convexhull[i].toFixed(2) + " " + convexhull[i + 1].toFixed(2));
-    // }
-
-    /* --- Utility function for convex hull ---*/
-
+    // Get divider points, leftmost and rightmost
     function getDivider(vertices){
         let vlen = vertices.length
         let rightmost = [
@@ -246,11 +247,18 @@ function convexHull(vertices){
         return [leftmost[0],leftmost[1],leftmost[2],leftmost[3],leftmost[4],
                 rightmost[0],rightmost[1],rightmost[2],rightmost[3],rightmost[4]]
     }
+
+    // Determinant function
+    // To determine a points pool
+    // + means S1, - means S2
     function determinant(divider, point){
         let sum1 = divider[0]*divider[6] + point[0]*divider[1] + divider[5]*point[1]
         let sum2 = point[0]*divider[6] + divider[5]*divider[1] + divider[0]*point[1]
         return sum1 - sum2
     }
+
+    // Divide function
+    // Fill S1 and S2 based on divider splitting
     function divide(v, divider){
         let s1 = []
         let s2 = []
@@ -269,6 +277,8 @@ function convexHull(vertices){
         return [s1, s2]
     }
 
+    // Recursion Function
+    // Base : Only 1 points in St
     function recursion(St, div, ch){
         if (St.length == 5){ // Base
             for (let i = 0; i < St.length; i += 1){
@@ -278,6 +288,8 @@ function convexHull(vertices){
         }
 
         let s1, s2
+
+        // Take the farthest point perpendicular from the divider line
         let farthest = [St[0], St[1], St[2], St[3], St[4]]
         let farthestlen = pointToLine(div, [St[0], St[1]])
 
@@ -288,11 +300,12 @@ function convexHull(vertices){
                 farthestlen = currentfarthest
             }
         }
-        for (let j = 0; j < farthest.length; j += 1){
+        for (let j = 0; j < farthest.length; j += 1){ // pun the farthest points to 
             ch.push(farthest[j])
         }
 
-        // Problem
+
+        // Select points only outside the triangle made by divider and farthest point
         let eligiblepoints = []
         for (let i = 0; i < St.length; i += 5){
             let isInTriangle = isPointInTriangle([St[i],St[i+1]], div, farthest)
@@ -310,6 +323,8 @@ function convexHull(vertices){
             farthest[0],farthest[1],farthest[2],farthest[3],farthest[4],
             div[5],div[6],div[7],div[8],div[9]
         ]
+
+        // Divide
         let divided = divide(eligiblepoints, divider1)
         s1 = divided[0]
         s2 = divided[1]
@@ -321,6 +336,8 @@ function convexHull(vertices){
         }
         return ch
     }
+
+    // Point to line perpendicular length formula
     function pointToLine(div, p){
         let A = p[0] - div[0];
         let B = p[1] - div[1];
@@ -352,6 +369,8 @@ function convexHull(vertices){
         let dy = p[1] - yy;
         return Math.sqrt(dx * dx + dy * dy);
     }
+
+    // Point inside triangle checker using barycentric coordinates
     function isPointInTriangle(p, div, f) {
         // Extract the 3 points of the triangle
         var A = [div[0], div[1]];
@@ -364,7 +383,7 @@ function convexHull(vertices){
         var AP = [p[0] - A[0], p[1] - A[1]];
       
         // Calculate dot products
-        var dotABAB = dotProduct(AB, AB);
+        var dotABAB = dotProduct(AB, AB); 
         var dotABAC = dotProduct(AB, AC);
         var dotACAC = dotProduct(AC, AC);
         var dotAPAB = dotProduct(AP, AB);
@@ -378,6 +397,9 @@ function convexHull(vertices){
         // Check if point is inside triangle
         return (u >= 0) && (v >= 0) && (u + v <= 1);
     }
+
+    // Dot product function
+    // For point inside triangle checker
     function dotProduct(v1, v2) {
         return v1[0] * v2[0] + v1[1] * v2[1];
     }
