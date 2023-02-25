@@ -1,22 +1,17 @@
-## How WebGL Works
+# **Tugas 1 IF3260 | 2D Web-based CAD**
 
-* gl_Position (vertex shader) and gl_FragColor (fragment shader) are special variables. They must be specified.
+## **Cara Menjalankan Program**
+1. Clone repository ini dengan menggunakan command 
+```
+git clone https://github.com/khelli07/grafkom-webgl-2d.git
+```
+2. Buka file ```index.html``` pada browser
 
-* Process: 
-Raw vertex data (CPU) -> Buffer (GPU) -> Shader Program (GPU) [Vertex Shader -> Fragment Shader] -> Display
+-----------------------------------------------------------
 
-* For each shader: 
-    1. Create shader
-    2. Put source (text) to the shader
-    3. Compile shader
-    4. Attach shader to program (after created)
-
-* Program:
-    1. Create program
-    2. Attach shaders
-    3. Link program
-
-* MUST DO:
-    1. Create buffer
-    2. Define attribute (input) for vertex shader
-    3. Use program
+## **Anggota Kelompok**
+|NIM       | Nama                   |
+|----------|------------------------|
+| 13520115 | Maria Khelli           |
+| 13520121 | Nicholas Budiono       |
+| 13520134 | Raka Wirabuana Ninagan |
