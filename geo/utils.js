@@ -74,3 +74,27 @@ function applyCursorRippleEffect(e) {
     ripple.onanimationend = () => document.body.removeChild(ripple);
 
 }
+
+function exportData(type, vertices) {
+    const element = document.createElement('a');
+    const config = {
+        "type": type,
+        "vertices": vertices,
+    }
+
+    element.setAttribute('href', 'data:text/json, ' + encodeURIComponent(JSON.stringify(config)));
+    element.setAttribute('download', 'config.json');
+
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+function parseJsonFile(file) {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader()
+      fileReader.onload = event => resolve(JSON.parse(event.target.result))
+      fileReader.onerror = error => reject(error)
+      fileReader.readAsText(file)
+    })
+  }

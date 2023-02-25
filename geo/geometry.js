@@ -23,8 +23,6 @@ class Geometry {
             angle: parseInt(document.getElementById("angle").value),
             transformX: parseInt(document.getElementById("transformX").value),
             transformY: parseInt(document.getElementById("transformY").value),
-            shearX: parseInt(document.getElementById("shearX").value),
-            shearY: parseInt(document.getElementById("shearY").value),
             color: hexToNormalizedRGB(document.getElementById("color-picker").value),
             type: this.type
         }
@@ -39,7 +37,10 @@ class Geometry {
         this.addParamsListener();
         this.addTypeListener();
         this.addColorListener();
-        this.addConvexHullButtonListener();
+        // this.addConvexHullButtonListener();
+
+        this.addSaveListener();
+        this.addLoadListener();
     }
 
     changeColor() {
@@ -68,7 +69,7 @@ class Geometry {
         vertices = translate(vertices, this.params?.x, this.params?.y);
         vertices = transformX(vertices, this.params?.transformX);
         vertices = transformY(vertices, this.params?.transformY); 
-        // vertices = shear(vertices, this.params?.shearX, this.params?.shearY);
+
         return vertices;
     }
     
@@ -85,8 +86,6 @@ class Geometry {
         addRangeListener("scale", this);
         addRangeListener("transformX", this);
         addRangeListener("transformY", this);
-        addRangeListener("shearX", this);
-        addRangeListener("shearY", this);
     }
 
     addTypeListener() {
@@ -210,6 +209,23 @@ class Geometry {
         });
     }
 
-    addVertexColorPicker() {
+    addSaveListener() {
+        const saveModel = document.getElementById('save-model');
+        
+        saveModel.addEventListener('click', () => {
+            exportData(this.params.type.toString(), this.vertices);
+        });
+    }
+
+    addLoadListener() {
+        const loadModel = document.getElementById('load-model');
+        
+        loadModel.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            parseJsonFile(file).then((data) => {
+                console.log(data["type"]);
+                console.log(data["vertices"]);
+            })
+        });
     }
 }
