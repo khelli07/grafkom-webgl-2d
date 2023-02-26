@@ -39,6 +39,7 @@ class Geometry {
         this.addParamsListener();
         this.addTypeListener();
         this.addColorListener();
+        this.addConvexHullButtonListener();
     }
 
     changeColor() {
