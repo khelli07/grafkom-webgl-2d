@@ -24,8 +24,7 @@ class Polygon extends Geometry {
     }
 
     transformAndDrawObject() {
-        // this.vertices = convexHull(this.vertices);
-        this.sortVertices();
+        this.vertices = convexHull(this.vertices);
         super.transformAndDrawObject();
     }
 
