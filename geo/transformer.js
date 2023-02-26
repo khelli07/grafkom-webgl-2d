@@ -20,8 +20,6 @@ function resetParams() {
     document.getElementById("scale").value = 1;
     document.getElementById("transformX").value = 1;
     document.getElementById("transformY").value = 1;
-    document.getElementById("shearX").value = 0;
-    document.getElementById("shearY").value = 0;
 }
 
 /**

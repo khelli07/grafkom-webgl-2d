@@ -23,8 +23,6 @@ class Geometry {
             angle: parseInt(document.getElementById("angle").value),
             transformX: parseInt(document.getElementById("transformX").value),
             transformY: parseInt(document.getElementById("transformY").value),
-            shearX: parseInt(document.getElementById("shearX").value),
-            shearY: parseInt(document.getElementById("shearY").value),
             color: hexToNormalizedRGB(document.getElementById("color-picker").value),
             type: this.type
         }
@@ -39,7 +37,7 @@ class Geometry {
         this.addParamsListener();
         this.addTypeListener();
         this.addColorListener();
-        this.addConvexHullButtonListener();
+        this.addSaveListener();
     }
 
     changeColor() {
@@ -68,7 +66,7 @@ class Geometry {
         vertices = translate(vertices, this.params?.x, this.params?.y);
         vertices = transformX(vertices, this.params?.transformX);
         vertices = transformY(vertices, this.params?.transformY); 
-        // vertices = shear(vertices, this.params?.shearX, this.params?.shearY);
+
         return vertices;
     }
     
@@ -85,8 +83,6 @@ class Geometry {
         addRangeListener("scale", this);
         addRangeListener("transformX", this);
         addRangeListener("transformY", this);
-        addRangeListener("shearX", this);
-        addRangeListener("shearY", this);
     }
 
     addTypeListener() {
@@ -115,9 +111,7 @@ class Geometry {
     resetCanvasListener() {
         this.removeVerticesListener();
 
-        const oldCanvas = document.getElementById("glcanvas");  
-        const newCanvas = oldCanvas.cloneNode(true);
-        oldCanvas.parentNode.replaceChild(newCanvas, oldCanvas);
+        const newCanvas = cloneAndReplace("glcanvas");
         newCanvas.addEventListener("click", (event) => applyCursorRippleEffect(event));
     
         this.gl = initGL();
@@ -209,7 +203,16 @@ class Geometry {
             point.remove();
         });
     }
+ 
+    addSaveListener() {
+        cloneAndReplace("save-model");
 
-    addVertexColorPicker() {
+        const saveModel = document.getElementById('save-model');
+        const tab = document.querySelector(".active").getAttribute("id");
+        const type = tab.split("-")[0];
+        
+        saveModel.addEventListener('click', () => {
+            exportData(type.toString(), this.vertices);
+        });
     }
 }

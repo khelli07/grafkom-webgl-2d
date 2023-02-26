@@ -32,31 +32,35 @@ function removeActiveTabs() {
     document.getElementById("polygon-tab").classList.remove("active");
 }
 
+function changeGeoById(id, geo) {
+    geo.restart();
+        
+    switch (id) {
+        case "line-tab":
+            geo = new Line(geo.gl);
+            console.log("line");
+            break;
+        case "square-tab":
+            geo = new Square(geo.gl);
+            break;
+        case "rectangle-tab":
+            geo = new Rectangle(geo.gl);
+            break;
+        case "polygon-tab":
+            geo = new Polygon(geo.gl);
+            break;
+    }
+
+    geo.prepare();
+    return geo
+}
+
 function addTabListener(id, geo) {
     const tab = document.getElementById(id);
     tab.addEventListener("click", () => {      
         removeActiveTabs();
         tab.classList.add("active");
-        
-        geo.restart();
-        
-        switch (id) {
-            case "line-tab":
-                geo = new Line(geo.gl);
-                break;
-            case "square-tab":
-                geo = new Square(geo.gl);
-                break;
-            case "rectangle-tab":
-                geo = new Rectangle(geo.gl);
-                break;
-            case "polygon-tab":
-                geo = new Polygon(geo.gl);
-                break;
-        }
-
-        geo.prepare();
-
+        changeGeoById(id, geo);
     }, false);
 }
 
@@ -73,4 +77,37 @@ function applyCursorRippleEffect(e) {
     ripple.style.animation = "ripple-effect .4s  linear";
     ripple.onanimationend = () => document.body.removeChild(ripple);
 
+}
+
+function exportData(type, vertices) {
+    const element = document.createElement('a');
+    const config = {
+        "type": type,
+        "vertices": vertices,
+    }
+
+    element.setAttribute('href', 'data:text/json, ' + encodeURIComponent(JSON.stringify(config)));
+    element.setAttribute('download', 'config.json');
+
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+function parseJsonFile(file) {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader()
+      fileReader.onload = event => resolve(JSON.parse(event.target.result))
+      fileReader.onerror = error => reject(error)
+      fileReader.readAsText(file)
+    })
+}
+
+
+function cloneAndReplace(id) {
+    const oldNode = document.getElementById(id);  
+    const newNode = oldNode.cloneNode(true);
+    oldNode.parentNode.replaceChild(newNode, oldNode);
+
+    return newNode
 }
