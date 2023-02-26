@@ -93,7 +93,7 @@ input::-webkit-color-swatch {
   width: 100%;
   padding-left: 2rem;
   padding-right: 3rem;
-  background-color: lightblue;
+  background-color: rgb(204, 251, 255);
 }
 
 .ripple {
