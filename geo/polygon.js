@@ -14,7 +14,7 @@ class Polygon extends Geometry {
             let y = getYClipValue(pos.y);
 
             this.addVertex(x, y);
-            this.createPolygonObject();
+            this.transformAndDrawObject();
         }, false);
     }
 
@@ -23,10 +23,10 @@ class Polygon extends Geometry {
         this.vertices.push(x, y, r, g, b);
     }
 
-    createPolygonObject() {
-        this.vertices = convexHull(this.vertices);
+    transformAndDrawObject() {
+        // this.vertices = convexHull(this.vertices);
         this.sortVertices();
-        this.transformAndDrawObject();
+        super.transformAndDrawObject();
     }
 
     // Supporting Functions

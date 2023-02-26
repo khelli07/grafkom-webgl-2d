@@ -32,31 +32,35 @@ function removeActiveTabs() {
     document.getElementById("polygon-tab").classList.remove("active");
 }
 
+function changeGeoById(id, geo) {
+    geo.restart();
+        
+    switch (id) {
+        case "line-tab":
+            geo = new Line(geo.gl);
+            console.log("line");
+            break;
+        case "square-tab":
+            geo = new Square(geo.gl);
+            break;
+        case "rectangle-tab":
+            geo = new Rectangle(geo.gl);
+            break;
+        case "polygon-tab":
+            geo = new Polygon(geo.gl);
+            break;
+    }
+
+    geo.prepare();
+    return geo
+}
+
 function addTabListener(id, geo) {
     const tab = document.getElementById(id);
     tab.addEventListener("click", () => {      
         removeActiveTabs();
         tab.classList.add("active");
-        
-        geo.restart();
-        
-        switch (id) {
-            case "line-tab":
-                geo = new Line(geo.gl);
-                break;
-            case "square-tab":
-                geo = new Square(geo.gl);
-                break;
-            case "rectangle-tab":
-                geo = new Rectangle(geo.gl);
-                break;
-            case "polygon-tab":
-                geo = new Polygon(geo.gl);
-                break;
-        }
-
-        geo.prepare();
-
+        changeGeoById(id, geo);
     }, false);
 }
 
@@ -97,4 +101,13 @@ function parseJsonFile(file) {
       fileReader.onerror = error => reject(error)
       fileReader.readAsText(file)
     })
-  }
+}
+
+
+function cloneAndReplace(id) {
+    const oldNode = document.getElementById(id);  
+    const newNode = oldNode.cloneNode(true);
+    oldNode.parentNode.replaceChild(newNode, oldNode);
+
+    return newNode
+}

@@ -37,10 +37,7 @@ class Geometry {
         this.addParamsListener();
         this.addTypeListener();
         this.addColorListener();
-        // this.addConvexHullButtonListener();
-
         this.addSaveListener();
-        this.addLoadListener();
     }
 
     changeColor() {
@@ -114,9 +111,7 @@ class Geometry {
     resetCanvasListener() {
         this.removeVerticesListener();
 
-        const oldCanvas = document.getElementById("glcanvas");  
-        const newCanvas = oldCanvas.cloneNode(true);
-        oldCanvas.parentNode.replaceChild(newCanvas, oldCanvas);
+        const newCanvas = cloneAndReplace("glcanvas");
         newCanvas.addEventListener("click", (event) => applyCursorRippleEffect(event));
     
         this.gl = initGL();
@@ -208,24 +203,16 @@ class Geometry {
             point.remove();
         });
     }
-
+ 
     addSaveListener() {
+        cloneAndReplace("save-model");
+
         const saveModel = document.getElementById('save-model');
+        const tab = document.querySelector(".active").getAttribute("id");
+        const type = tab.split("-")[0];
         
         saveModel.addEventListener('click', () => {
-            exportData(this.params.type.toString(), this.vertices);
-        });
-    }
-
-    addLoadListener() {
-        const loadModel = document.getElementById('load-model');
-        
-        loadModel.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            parseJsonFile(file).then((data) => {
-                console.log(data["type"]);
-                console.log(data["vertices"]);
-            })
+            exportData(type.toString(), this.vertices);
         });
     }
 }

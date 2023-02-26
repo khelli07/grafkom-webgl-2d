@@ -1,11 +1,19 @@
-
-const loadBtn = document.getElementById('load-model');
-
-loadBtn.addEventListener('click', () => {});
-
-
 const main = () => {
     const gl = initGL();    
-    const geo = new Line(gl);
+    let geo = new Line(gl);
     geo.prepare();
+
+    const loadModel = document.getElementById('load-model');
+        
+    loadModel.addEventListener('change', (event) => {
+        parseJsonFile(event.target.files[0]).then((data) => {
+            const id = data["type"] + "-tab";
+            removeActiveTabs();
+            document.getElementById(id).classList.add("active");
+            
+            geo = changeGeoById(id, geo);
+            geo.vertices = data["vertices"];
+            geo.transformAndDrawObject();
+        })
+    });
 };
